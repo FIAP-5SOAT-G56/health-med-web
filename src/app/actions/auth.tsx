@@ -22,6 +22,10 @@ export async function signup(_: any, formData: FormData) {
    try {
     const registerResponse = await api.post('/v1/users/login', {
       email, password,
+    }, {
+      headers: {
+        referrerPolicy: "unsafe-url" 
+      }
     })
   
     console.log(registerResponse.data)
