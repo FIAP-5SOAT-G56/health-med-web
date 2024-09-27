@@ -1,7 +1,11 @@
 'use client'
+import { api } from '@/lib/api';
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation'
+
 
 export default function Page() {
+  const router = useRouter()
   const [formData, setFormData] = useState({
     nome: '',
     cpf: '',
@@ -34,11 +38,21 @@ export default function Page() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit =async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log('Formulário enviado:', formData);
-      // Aqui você enviaria os dados para o backend
+      await api.post(
+        '/v1/doctors/user',
+        {
+          name: formData.nome,
+          cpf: formData.cpf,
+          email: formData.email,
+          password: formData.senha,
+          crm: formData.crm
+        },
+      )
+      
+      router.push('/login')
     }
   };
 
@@ -54,7 +68,7 @@ export default function Page() {
             name="nome"
             value={formData.nome}
             onChange={handleChange}
-            className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+            className="mt-1 block w-full px-3 py-2 bg-white border text-gray-400 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
           />
           {errors.nome && <p className="mt-1 text-sm text-red-600">{errors.nome}</p>}
         </div>
@@ -67,7 +81,7 @@ export default function Page() {
             name="cpf"
             value={formData.cpf}
             onChange={handleChange}
-            className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+            className="mt-1 block w-full px-3 py-2 bg-white border text-gray-400 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
           />
           {errors.cpf && <p className="mt-1 text-sm text-red-600">{errors.cpf}</p>}
         </div>
@@ -80,7 +94,7 @@ export default function Page() {
             name="email"
             value={formData.email}
             onChange={handleChange}
-            className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+            className="mt-1 block w-full px-3 py-2 bg-white border text-gray-400 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
           />
           {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
         </div>
@@ -93,7 +107,7 @@ export default function Page() {
             name="senha"
             value={formData.senha}
             onChange={handleChange}
-            className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+            className="mt-1 block w-full px-3 py-2 bg-white border text-gray-400 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
           />
           {errors.senha && <p className="mt-1 text-sm text-red-600">{errors.senha}</p>}
         </div>
@@ -106,7 +120,7 @@ export default function Page() {
             name="crm"
             value={formData.crm}
             onChange={handleChange}
-            className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+            className="mt-1 block w-full px-3 py-2 bg-white border text-gray-400 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
           />
           {errors.crm && <p className="mt-1 text-sm text-red-600">{errors.crm}</p>}
         </div>

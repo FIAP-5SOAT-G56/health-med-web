@@ -160,7 +160,7 @@ export default function Page() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {medicos.map((medico) => (
                 <Link href={'/doctor/' + medico.id} key={medico.id} className="bg-white p-4 rounded-lg shadow cursor-pointer hover:shadow-md transition-shadow">
-                  <h4 className="font-bold">{medico.nome}</h4>
+                  <h4 className="font-bold text-slate-700">{medico.nome}</h4>
                   <p className="text-gray-600">CRM: {medico.crm}</p>
                 </Link>
               ))}

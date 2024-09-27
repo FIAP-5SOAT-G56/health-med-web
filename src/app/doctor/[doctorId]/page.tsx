@@ -11,7 +11,7 @@ export default function Page({ params }: { params: IParams }) {
   const [consultas, setConsultas] = useState([]);
   const [filtroData, setFiltroData] = useState('');
 
-  const find =async () => {
+  const find = async () => {
     const tt =  await api.get(
       '/v1/agenda/' + params.doctorId,
       {
@@ -20,8 +20,8 @@ export default function Page({ params }: { params: IParams }) {
         },
       },
     )
+    console.log(tt.data.data.agenda);
   const horarios = tt.data.data.agenda.map(agenda => {
-
     return {
       id: agenda.id,
       paciente: undefined,
@@ -30,6 +30,8 @@ export default function Page({ params }: { params: IParams }) {
       liberada: agenda.liberada
     }
   })
+  console.log(horarios)
+
   setConsultas(horarios)
   }
 
@@ -38,8 +40,7 @@ export default function Page({ params }: { params: IParams }) {
 
   },[
   ])
-  // Função para formatar a data e hora
-  const formatarDataHora = (dataString) => {
+  const formatarDataHora = (dataString: string) => {
     const data = new Date(dataString);
     return data.toLocaleString('pt-BR', { 
       day: '2-digit', 
@@ -49,6 +50,24 @@ export default function Page({ params }: { params: IParams }) {
       minute: '2-digit'
     });
   };
+
+  const marcarHorario = async (id: number) => {
+
+    await api.patch(
+      '/v1/agenda/consulta',
+      {
+        agendaId: id,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${Cookie.get('token')}`,
+        },
+      },
+    )
+
+    find()
+  }
+
 
   const consultasFiltradas = filtroData
     ? consultas.filter(consulta => consulta.inicio.startsWith(filtroData))
@@ -80,6 +99,7 @@ export default function Page({ params }: { params: IParams }) {
                     <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Início</th>
                     <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fim</th>
                     <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Disponivel</th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ação</th>
 
                   </tr>
                 </thead>
@@ -90,6 +110,15 @@ export default function Page({ params }: { params: IParams }) {
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{formatarDataHora(consulta.inicio)}</td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{formatarDataHora(consulta.fim)}</td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{consulta.liberada ? 'Sim': 'Não'}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{consulta.liberada ? 
+                          <button
+                          onClick={ () => marcarHorario(consulta.id)}
+                          className=" p-1 justify-center border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-lime-600 hover:bg-lime-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-500"
+                        >
+                          Marcar
+                        </button>
+                      
+                      : undefined}</td>
                     </tr>
                   ))}
                 </tbody>

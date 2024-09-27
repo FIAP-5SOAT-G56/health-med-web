@@ -69,6 +69,13 @@ export default function RootLayout({
                       </Link>
                     </li>
                     }
+
+                  { isAuthenticated && user && <li>
+                      <Link href="/create-doctor" className="hover:text-blue-200 transition-colors">
+                        Olá, {user.name.split(' ').shift()}
+                      </Link>
+                    </li>
+                    }
                     
                     {!isAuthenticated ? 
                      <li>
@@ -83,7 +90,6 @@ export default function RootLayout({
                       Sair
                     </a>
                   </li>
-                    
                     }
                   </ul>
                 </nav>

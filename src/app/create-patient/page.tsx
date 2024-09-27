@@ -1,8 +1,11 @@
 'use client'
-import Link from 'next/link';
+import { api } from '@/lib/api';
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation'
+
 
 export default function Page() {
+  const router = useRouter()
   const [formData, setFormData] = useState({
     nome: '',
     cpf: '',
@@ -27,17 +30,24 @@ export default function Page() {
     if (!formData.email) newErrors.email = 'E-mail é obrigatório';
     if (!formData.senha) newErrors.senha = 'Senha é obrigatória';
     
-    // Adicione validações mais complexas aqui se necessário
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log('Formulário enviado:', formData);
-      // Aqui você enviaria os dados para o backend
+      await api.post(
+        '/v1/patients/user',
+        {
+          name: formData.nome,
+          cpf: formData.cpf,
+          email: formData.email,
+          password: formData.senha
+        },
+      )
+      
+      router.push('/login')
     }
   };
 
@@ -57,7 +67,7 @@ export default function Page() {
                 name="nome"
                 value={formData.nome}
                 onChange={handleChange}
-                className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="mt-1 block w-full px-3 py-2 text-gray-400 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               />
               {errors.nome && <p className="mt-1 text-sm text-red-600">{errors.nome}</p>}
             </div>
@@ -70,7 +80,7 @@ export default function Page() {
                 name="cpf"
                 value={formData.cpf}
                 onChange={handleChange}
-                className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="mt-1 block w-full px-3 py-2 text-gray-400 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               />
               {errors.cpf && <p className="mt-1 text-sm text-red-600">{errors.cpf}</p>}
             </div>
@@ -83,7 +93,7 @@ export default function Page() {
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="mt-1 block w-full px-3 py-2 text-gray-400 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               />
               {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
             </div>
@@ -96,7 +106,7 @@ export default function Page() {
                 name="senha"
                 value={formData.senha}
                 onChange={handleChange}
-                className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="mt-1 block w-full px-3 py-2 text-gray-400 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               />
               {errors.senha && <p className="mt-1 text-sm text-red-600">{errors.senha}</p>}
             </div>
@@ -104,7 +114,7 @@ export default function Page() {
             <div>
               <button
                 type="submit"
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                className="w-full flex justify-center py-2 text-gray-400 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               >
                 Cadastrar
               </button>
