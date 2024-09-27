@@ -70,7 +70,7 @@ export default function Page() {
 
   };
 
-  const onRanges = (e) => {
+  const onRanges = () => {
     setEtapas(Etapas.RANGES)
   };
 
@@ -97,7 +97,7 @@ export default function Page() {
     setHorarios(newHorarios);
   }
 
-  const onSamples = (e) => {
+  const onSamples = () => {
     if (selectedDate && startTime && endTime) {
       setEtapas(Etapas.SAMPLES)
     }

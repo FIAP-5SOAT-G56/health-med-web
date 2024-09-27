@@ -32,8 +32,6 @@ export default function Page() {
     if (!formData.senha) newErrors.senha = 'Senha é obrigatória';
     if (!formData.crm) newErrors.crm = 'CRM é obrigatório';
     
-    // Adicione validações mais complexas aqui se necessário
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };

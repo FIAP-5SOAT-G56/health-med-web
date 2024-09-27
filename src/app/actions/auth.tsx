@@ -1,13 +1,9 @@
 import { api } from "@/lib/api"
 import { SignupFormSchema } from "../lib/definitions"
 // import { createSession, deleteSession } from "../lib/session"
-import { NextRequest, NextResponse } from 'next/server'
-import { cookies } from "next/headers"
+import { NextResponse } from 'next/server'
 
-import { redirect } from 'next/navigation'
-import { createSession } from "../lib/session"
-
-export async function signup(state: any, formData: FormData) {
+export async function signup(_: any, formData: FormData) {
     const validatedFields = SignupFormSchema.safeParse({
         email: formData.get('email'),
         password: formData.get('password'),

@@ -2,8 +2,7 @@
 
 import Link from 'next/link';
 import React, { useState } from 'react';
-import { api } from '@/lib/api'
-import { useFormState, useFormStatus } from 'react-dom'
+import { useFormState } from 'react-dom'
 import { signup } from '../actions/auth';
 
 export default function Page() {
@@ -14,7 +13,7 @@ export default function Page() {
     password: ''
   });
 
-  const [errors, setErrors] = useState<any>({});
+  const [errors] = useState<any>({});
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,24 +21,6 @@ export default function Page() {
       ...prevState,
       [name]: value
     }));
-  };
-
-  const validateForm = () => {
-    let newErrors: any = {};
-    if (!formData.email) newErrors.email = 'E-mail é obrigatório';
-    if (!formData.password) newErrors.password = 'password é obrigatória';
-    
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (validateForm()) {
-      console.log('Login submetido:', formData);
-
-      // Aqui você faria a autenticação com o backend
-    }
   };
 
   return (
