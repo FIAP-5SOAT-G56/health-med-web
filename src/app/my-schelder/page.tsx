@@ -2,15 +2,16 @@
 import React, { useEffect, useState } from 'react';
 import { api } from '@/lib/api';
 import Cookie from 'js-cookie'
-
+import {jwtDecode} from 'jwt-decode'
 
 export default function Page() {
   const [consultas, setConsultas] = useState([]);
   const [filtroData, setFiltroData] = useState('');
+  const user: any = jwtDecode(Cookie.get('token'))
 
-  const find =async () => {
+  const find = async () => {
     const tt =  await api.get(
-      '/v1/agenda/1',
+      '/v1/agenda/' + user.sub,
       {
         headers: {
           Authorization: `Bearer ${Cookie.get('token')}`,
